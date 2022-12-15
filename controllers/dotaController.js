@@ -10,9 +10,6 @@ import moment from "moment";
 moment().utcOffset("+07:00");
 moment.locale("id");
 
-process.env.TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJodHRwczovL3N0ZWFtY29tbXVuaXR5LmNvbS9vcGVuaWQvaWQvNzY1NjExOTgxOTA5Mjk1NjkiLCJ1bmlxdWVfbmFtZSI6InJvdOKZoOKZpeKZo-KZpiIsIlN1YmplY3QiOiIzZDEzYTgzMS05ZTdmLTRjNTQtODllOC1hZTgzNWM4OWNmZTEiLCJTdGVhbUlkIjoiMjMwNjYzODQxIiwibmJmIjoxNjY4MDUxMTEzLCJleHAiOjE2OTk1ODcxMTMsImlhdCI6MTY2ODA1MTExMywiaXNzIjoiaHR0cHM6Ly9hcGkuc3RyYXR6LmNvbSJ9.EPO8EttIngPEbapA5uo3uh6pXMtAVfJZwlMWiWfclrQ";
-
 let config = {
   headers: {
     Authorization: "Bearer " + process.env.TOKEN,
