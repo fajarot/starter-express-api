@@ -118,17 +118,16 @@ async function switchRespon(respon, method) {
   return result;
 }
 
-function rankHandler(respon) {
-  // console.log(respon);
+async function rankHandler(respon, time) {
+  // console.log(respon.status);
   let data =
     respon.status == 403
       ? { error: "This Account is Private" }
-      : respon.status == 200 && respon.data.allTime.matches.matchCount == 0
+      : respon.status == 200 && _.isNil(respon.data.allTime.matches.date)
       ? { error: "Id palsu taiiik 😡" }
       : respon.data.allTime.matches;
 
   let result;
-  // let matches = respon.allTime.matches;
 
   if (data.error) {
     result = data.error;
@@ -136,9 +135,10 @@ function rankHandler(respon) {
     let win = data.win;
     let lose = data.matchCount - data.win;
     let WinRate = (win / data.matchCount) * 100;
-    let lastDate = moment.unix(data.date).format("lll");
+    let lastDate = moment.unix(data.date).format("Do MMM h:mm");
+    let fromDate = moment.unix(time).format("Do MMM");
 
-    result = `Recent Ranked Match Sampe ${lastDate} | Total Match : ${
+    result = `Recent Ranked Match Dari ${fromDate} Sampe ${lastDate} | Total Match : ${
       data.matchCount
     } | WIN : ${win} | LOSE : ${lose} | WINRATE : ${WinRate.toFixed(2)}%`;
   }
@@ -165,8 +165,8 @@ export const getDotaInfo = async (req, res) => {
     if (method.includes("rank")) {
       let hours = method.split("rank")[1];
       hours = hours != "" && !isNaN(hours) ? hours : 24;
-      // console.log(hours);
       let dateNow = moment().subtract(hours, "hours").unix();
+      // console.log(hours);
       data = await axios.get(
         "https://api.stratz.com/api/v1/Player/" +
           dota_id +
@@ -176,7 +176,8 @@ export const getDotaInfo = async (req, res) => {
         config
       );
 
-      result = rankHandler(data);
+      // console.log(data);
+      result = await rankHandler(data, dateNow);
     } else {
       data = await axios.get(
         "https://api.stratz.com/api/v1/Player/" + dota_id,
@@ -185,6 +186,7 @@ export const getDotaInfo = async (req, res) => {
       result = await switchRespon(data, method);
     }
   } catch (error) {
+    if (method.includes("rank")) return res.status(400).send("Id ini Private");
     data = error.response;
   }
 
