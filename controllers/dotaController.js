@@ -165,7 +165,7 @@ export const getDotaInfo = async (req, res) => {
     if (method.includes("rank")) {
       let hours = method.split("rank")[1];
       hours = hours != "" && !isNaN(hours) ? hours : 24;
-      console.log(hours);
+      // console.log(hours);
       let dateNow = moment().subtract(hours, "hours").unix();
       data = await axios.get(
         "https://api.stratz.com/api/v1/Player/" +
