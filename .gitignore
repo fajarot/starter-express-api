@@ -1,4 +1,3 @@
-node_modules
 _test_
 .babelrc
 openai.js
