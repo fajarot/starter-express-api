@@ -176,18 +176,21 @@ export const getDotaInfo = async (req, res) => {
         config
       );
 
-      // console.log(data);
+      console.log('RANK => ', data);
       result = await rankHandler(data, dateNow);
     } else {
       data = await axios.get(
         "https://api.stratz.com/api/v1/Player/" + dota_id,
         config
       );
+
+      console.log('NORMAL => ', data);
       result = await switchRespon(data, method);
     }
   } catch (error) {
     if (method.includes("rank")) return res.status(400).send("Id ini Private");
     data = error.response;
+    console.log('ERROR => ',data);
   }
 
   res.status(200).send(result);
